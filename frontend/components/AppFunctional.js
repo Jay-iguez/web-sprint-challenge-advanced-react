@@ -8,7 +8,7 @@ const initialSteps = 0
 const initialIndex = 4 // the index the "B" is at
 
 export default function AppFunctional(props) {
-
+  const [selectedIndex, setSelectedIndex] = useState(4)
   const [email, setEmail] = useState(initialEmail)
 
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
@@ -17,6 +17,19 @@ export default function AppFunctional(props) {
   function getXY() {
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
+    let xMap = {'0': 1, '1': 2, '2': 3, '3': 1, '4': 2, '5': 3, '6': 1, '7': 2, '8': 3}
+    let coordinates = {x: 0, y: 0}
+    if (selectedIndex >= 0 && selectedIndex <= 2) {
+      const y = 1
+      coordinates = {x: xMap[selectedIndex], y: y}
+    } else if (selectedIndex >= 3 && selectedIndex <= 5) {
+      const y = 2
+      coordinates = {x: xMap[selectedIndex], y: y}
+    } else if (selectedIndex >= 6 && selectedIndex <= 8) {
+      const y = 3
+      coordinates = {x: xMap[selectedIndex], y: y}
+    } 
+   
   }
 
   function getXYMessage() {
@@ -62,10 +75,10 @@ export default function AppFunctional(props) {
           [0, 1, 2,
            3, 4, 5,
            6, 7, 8].map(idx => (
-            <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
-              {idx === 4 ? 'B' : null}
+              <div key={idx} className={`square${idx === selectedIndex ? ' active' : ''}`}>
+              {idx === selectedIndex ? 'B' : null}
             </div>
-          ))
+           ))
         }
       </div>
       <div className="info">
@@ -78,7 +91,7 @@ export default function AppFunctional(props) {
         <button id="down">DOWN</button>
         <button id="reset">reset</button>
       </div>
-      <form>
+      <form onSubmit={onSubmit}>
         <input id="email" type="email" name="email" value={email.email} onChange={onChange} placeholder="type email"></input>
         <input id="submit" type="submit"></input>
       </form>
