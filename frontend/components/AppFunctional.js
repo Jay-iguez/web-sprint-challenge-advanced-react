@@ -21,6 +21,7 @@ export default function AppFunctional(props) {
       setSelectedIndex(initialIndex)
       setMessage('')
       setStepCount(0)
+      setEmail(initialEmail)
     }
 
     let xMap = {'0': 1, '1': 2, '2': 3, '3': 1, '4': 2, '5': 3, '6': 1, '7': 2, '8': 3}
@@ -91,6 +92,7 @@ export default function AppFunctional(props) {
       setSelectedIndex(selectedIndex + 3)
     }
     setStepCount(stepCount + 1)
+    setMessage(initialMessage)
   }
 
   function onChange(e) {
@@ -101,7 +103,23 @@ export default function AppFunctional(props) {
 
   function onSubmit(e) {
     // Use a POST request to send a payload to the server.
-    e.preventDefault()
+    e.preventDefault() 
+    if(email.email === 'foo@bar.baz'){
+      setMessage('foo@bar.baz failure #23')
+      setEmail(initialEmail)
+      return
+    }
+
+    const coordinates = getXY()
+    const payloadData = {'x' : coordinates.x, 'y' : coordinates.y, 'steps' : stepCount, email: email.email}
+    axios.post('http://localhost:9000/api/result', payloadData)
+    .then(res => {
+      setMessage(res.data.message)
+      setEmail(initialEmail)
+    })
+    .catch(err => {
+      console.error(err)
+    })
   }
 
   return (

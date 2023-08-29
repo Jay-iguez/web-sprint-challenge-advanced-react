@@ -6,20 +6,43 @@ const initialEmail = ''
 const initialSteps = 0
 const initialIndex = 4 // the index the "B" is at
 
-const initialState = {
-  message: initialMessage,
-  email: initialEmail,
-  index: initialIndex,
-  steps: initialSteps,
-}
-
 export default class AppClass extends React.Component {
+  constructor(){
+    super()
+    this.state ={
+      selectedIndex: initialIndex,
+      stepCount: initialSteps,
+      message: initialMessage,
+      email: initialEmail
+    }
+  }
   // THE FOLLOWING HELPERS ARE JUST RECOMMENDATIONS.
   // You can delete them and build your own logic from scratch.
 
-  getXY = () => {
-    // It it not necessary to have a state to track the coordinates.
-    // It's enough to know what index the "B" is at, to be able to calculate them.
+  getXY = (reset) => {
+    if (reset === 'reset') {
+      this.setState(() => ({
+        selectedIndex: initialIndex,
+        stepCount: initialSteps, 
+        message: initialMessage,
+        email: initialEmail
+      }))
+    }
+
+    let xMap = {'0': 1, '1': 2, '2': 3, '3': 1, '4': 2, '5': 3, '6': 1, '7': 2, '8': 3}
+    let coordinates = {x: 0, y: 0}
+    if (selectedIndex >= 0 && selectedIndex <= 2) {
+      const y = 1
+      coordinates = {x: xMap[this.state.selectedIndex], y: y}
+    } else if (selectedIndex >= 3 && selectedIndex <= 5) {
+      const y = 2
+      coordinates = {x: xMap[this.state.selectedIndex], y: y}
+    } else if (selectedIndex >= 6 && selectedIndex <= 8) {
+      const y = 3
+      coordinates = {x: xMap[this.state.selectedIndex], y: y}
+    }
+
+    return coordinates
   }
 
   getXYMessage = () => {
