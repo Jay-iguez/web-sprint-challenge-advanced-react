@@ -104,15 +104,12 @@ export default function AppFunctional(props) {
   function onSubmit(e) {
     // Use a POST request to send a payload to the server.
     e.preventDefault() 
-    if(email.email === 'foo@bar.baz'){
-      setMessage('foo@bar.baz failure #23')
-      setEmail(initialEmail)
-      return
-    } else if (email.email === ''){
+
+    if (email.email === ''){
       setMessage('Ouch: email is required')
       return
     }
-
+  
     const coordinates = getXY()
     const payloadData = {'x' : coordinates.x, 'y' : coordinates.y, 'steps' : stepCount, 'email': email.email}
     axios.post('http://localhost:9000/api/result', payloadData)
@@ -121,7 +118,8 @@ export default function AppFunctional(props) {
       setEmail(initialEmail)
     })
     .catch(err => {
-      console.error(err)
+      //console.error('THE ERROR', err.response.data.message)
+      setMessage(err.response.data.message)
     })
   }
 
@@ -129,7 +127,7 @@ export default function AppFunctional(props) {
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">{getXYMessage()}</h3>
-        <h3 id="steps">You moved {stepCount} times</h3>
+        <h3 id="steps">You moved {stepCount} {stepCount === 1 ? 'time' : 'times'}</h3>
       </div>
       <div id="grid">
         {

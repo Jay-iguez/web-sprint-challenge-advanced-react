@@ -105,13 +105,8 @@ export default class AppClass extends React.Component {
 
   onSubmit = (evt) => {
     evt.preventDefault()
-    if (this.state.email === 'foo@bar.baz'){
-      this.setState(() => ({
-        message : 'foo@bar.baz failure #23',
-        email : initialEmail
-      }))
-      return
-    } else if (this.state.email === ''){
+
+    if (this.state.email === ''){
       this.setState({message : 'Ouch: email is required'})
       return
     }
@@ -126,7 +121,7 @@ export default class AppClass extends React.Component {
       }))
     })
     .catch(err => {
-      console.error(err)
+      this.setState({message : err.response.data.message})
     })
   }
 
@@ -136,7 +131,7 @@ export default class AppClass extends React.Component {
       <div id="wrapper" className={className}>
         <div className="info">
           <h3 id="coordinates">{this.getXYMessage()}</h3>
-          <h3 id="steps">You moved {this.state.stepCount} times</h3>
+          <h3 id="steps">You moved {this.state.stepCount} {this.state.stepCount === 1 ? 'time' : 'times'}</h3>
         </div>
         <div id="grid">
           {
