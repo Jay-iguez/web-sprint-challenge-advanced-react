@@ -108,10 +108,13 @@ export default function AppFunctional(props) {
       setMessage('foo@bar.baz failure #23')
       setEmail(initialEmail)
       return
+    } else if (email.email === ''){
+      setMessage('Ouch: email is required')
+      return
     }
 
     const coordinates = getXY()
-    const payloadData = {'x' : coordinates.x, 'y' : coordinates.y, 'steps' : stepCount, email: email.email}
+    const payloadData = {'x' : coordinates.x, 'y' : coordinates.y, 'steps' : stepCount, 'email': email.email}
     axios.post('http://localhost:9000/api/result', payloadData)
     .then(res => {
       setMessage(res.data.message)
